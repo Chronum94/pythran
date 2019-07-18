@@ -103,6 +103,8 @@ class TestEnv(unittest.TestCase):
         if type(res).__name__ == type(ref).__name__:
             return
 
+        intn = int64 if sys.maxsize > 2**32 else int32
+
         if isinstance(ref, ndarray):
             # res can be an ndarray of dim 0 because of isneginf call
             if ref.ndim == 0 and (not isinstance(res, ndarray)
@@ -110,8 +112,8 @@ class TestEnv(unittest.TestCase):
                 self.check_type(ref.item(0), res)
             else:
                 self.assertIsInstance(res, type(ref))
-        elif isinstance(ref, (int, int64)):
-            self.assertIsInstance(res, (int, int64))
+        elif isinstance(ref, (int, intn)):
+            self.assertIsInstance(res, (int, intn))
         elif isinstance(ref, (float, float64)):
             self.assertIsInstance(res, (float, float64))
         elif isinstance(ref, (complex, complex128)):
